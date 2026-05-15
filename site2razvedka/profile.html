@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SneakerShop — Вход / Регистрация</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f9fafb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .auth-box {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 32px;
+            width: 90%;
+            max-width: 400px;
+        }
+        .auth-box h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #7c3aed;
+        }
+        .auth-box input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+        .auth-box input:focus {
+            outline: none;
+            border-color: #7c3aed;
+        }
+        .auth-box input.error {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+        .auth-box input.valid {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+        .error-msg {
+            color: #ef4444;
+            font-size: 12px;
+            margin-bottom: 8px;
+            display: none;
+            line-height: 1.2;
+        }
+        .error-msg.show {
+            display: block;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #7c3aed;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 6px;
+            transition: 0.2s;
+        }
+        .btn:hover { background: #6d28d9; }
+        .btn:disabled {
+            background: #c4b5fd;
+            cursor: not-allowed;
+        }
+        .switch {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+        .switch a { color: #7c3aed; cursor: pointer; text-decoration: underline; }
+        .hidden { display: none; }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+        .back-link a { color: #7c3aed; }
+    </style>
+</head>
+<body>
+
+    <div class="auth-box">
+        <h2 id="formTitle">🔐 Вход</h2>
+
+        <!-- Форма входа -->
+        <form id="loginForm" onsubmit="return handleLogin(event)">
+            <input type="email" id="loginEmail" placeholder="Email" autocomplete="email">
+            <span class="error-msg" id="loginEmailError">Введите корректный email</span>
+
+            <input type="password" id="loginPassword" placeholder="Пароль" autocomplete="current-password">
+            <span class="error-msg" id="loginPasswordError">Пароль не может быть пустым</span>
+
+            <button type="submit" class="btn">Войти</button>
+            <p class="switch">Нет аккаунта? <a onclick="toggleForm()">Зарегистрироваться</a></p>
+        </form>
+
+        <!-- Форма регистрации -->
+        <form id="registerForm" class="hidden" onsubmit="return handleRegister(event)">
+            <input type="text" id="regName" placeholder="Имя">
+            <span class="error-msg" id="regNameError">Имя не может быть пустым</span>
+
+            <input type="email" id="regEmail" placeholder="Email" autocomplete="email">
+            <span class="error-msg" id="regEmailError"></span>
+
+            <input type="tel" id="regPhone" placeholder="Телефон (например: +79991234567)">
+            <span class="error-msg" id="regPhoneError"></span>
+
+            <input type="password" id="regPassword" placeholder="Пароль" autocomplete="new-password">
+            <span class="error-msg" id="regPasswordError">Пароль не может быть пустым</span>
+
+            <button type="submit" class="btn">Создать аккаунт</button>
+            <p class="switch">Уже есть аккаунт? <a onclick="toggleForm()">Войти</a></p>
+        </form>
+
+        <div class="back-link"><a href="index.html">← На главную</a></div>
+    </div>
+
+    <script>
+        // Переключение форм
+        function toggleForm() {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const title = document.getElementById('formTitle');
+
+            loginForm.classList.toggle('hidden');
+            registerForm.classList.toggle('hidden');
+
+            if (registerForm.classList.contains('hidden')) {
+                title.textContent = '🔐 Вход';
+            } else {
+                title.textContent = '📝 Регистрация';
+            }
+
+            // Сброс ошибок
+            clearAllErrors();
+            clearAllInputStyles();
+        }
+
+        // ====== ВАЛИДАЦИЯ EMAIL ======
+        function validateEmail(email) {
+            const trimmed = email.trim();
+
+            if (trimmed === '') {
+                return { valid: false, message: 'Email не может быть пустым' };
+            }
+
+            // Проверка на русские буквы
+            if (/[а-яё]/i.test(trimmed)) {
+                return { valid: false, message: 'Email не должен содержать русские буквы' };
+            }
+
+            // Проверка на наличие @ и точки
+            if (!trimmed.includes('@')) {
+                return { valid: false, message: 'Email должен содержать символ @ (собаку)' };
+            }
+
+            if (!trimmed.includes('.')) {
+                return { valid: false, message: 'Email должен содержать точку' };
+            }
+
+            // Проверка что @ не первый и не последний символ
+            const atIndex = trimmed.indexOf('@');
+            if (atIndex === 0) {
+                return { valid: false, message: 'Символ @ не может быть первым' };
+            }
+            if (atIndex === trimmed.length - 1) {
+                return { valid: false, message: 'Символ @ не может быть последним' };
+            }
+
+            // Проверка что точка есть после @
+            const afterAt = trimmed.substring(atIndex + 1);
+            if (!afterAt.includes('.')) {
+                return { valid: false, message: 'После @ должна быть точка в домене' };
+            }
+
+            // Проверка что точка не последний символ
+            if (trimmed.endsWith('.')) {
+                return { valid: false, message: 'Точка не может быть последним символом' };
+            }
+
+            // Полная проверка формата email
+            const emailRegex = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(trimmed)) {
+                return { valid: false, message: 'Некорректный формат email' };
+            }
+
+            return { valid: true, message: '' };
+        }
+
+        // ====== ВАЛИДАЦИЯ ТЕЛЕФОНА ======
+        function validatePhone(phone) {
+            const trimmed = phone.trim();
+
+            if (trimmed === '') {
+                return { valid: false, message: 'Номер телефона не может быть пустым' };
+            }
+
+            // Удаляем всё кроме цифр и +
+            const cleaned = trimmed.replace(/[\s\-()]/g, '');
+
+            // Проверка на буквы (русские и английские)
+            if (/[а-яёa-z]/i.test(cleaned)) {
+                return { valid: false, message: 'Номер телефона не должен содержать буквы' };
+            }
+
+            // Проверка на другие недопустимые символы
+            if (/[^\d+]/.test(cleaned)) {
+                return { valid: false, message: 'Номер телефона содержит недопустимые символы' };
+            }
+
+            // Проверка минимальной длины (без учёта +)
+            const digits = cleaned.replace('+', '');
+            if (digits.length < 10) {
+                return { valid: false, message: 'Слишком короткий номер (минимум 10 цифр)' };
+            }
+
+            if (digits.length > 15) {
+                return { valid: false, message: 'Слишком длинный номер (максимум 15 цифр)' };
+            }
+
+            return { valid: true, message: '' };
+        }
+
+        // ====== ОТОБРАЖЕНИЕ ОШИБОК ======
+        function showError(inputId, errorId, message, isValid) {
+            const input = document.getElementById(inputId);
+            const errorSpan = document.getElementById(errorId);
+
+            input.classList.remove('error', 'valid');
+
+            if (!isValid && message) {
+                input.classList.add('error');
+                errorSpan.textContent = message;
+                errorSpan.classList.add('show');
+            } else if (isValid && input.value.trim() !== '') {
+                input.classList.add('valid');
+                errorSpan.classList.remove('show');
+            } else {
+                errorSpan.classList.remove('show');
+            }
+        }
+
+        function clearAllErrors() {
+            document.querySelectorAll('.error-msg').forEach(el => el.classList.remove('show'));
+        }
+
+        function clearAllInputStyles() {
+            document.querySelectorAll('input').forEach(el => {
+                el.classList.remove('error', 'valid');
+            });
+        }
+
+        // ====== ВАЛИДАЦИЯ РЕГИСТРАЦИИ В РЕАЛЬНОМ ВРЕМЕНИ ======
+        document.getElementById('regEmail').addEventListener('input', function() {
+            const result = validateEmail(this.value);
+            showError('regEmail', 'regEmailError', result.message, result.valid);
+        });
+
+        document.getElementById('regEmail').addEventListener('blur', function() {
+            const result = validateEmail(this.value);
+            showError('regEmail', 'regEmailError', result.message, result.valid);
+        });
+
+        document.getElementById('regPhone').addEventListener('input', function() {
+            const result = validatePhone(this.value);
+            showError('regPhone', 'regPhoneError', result.message, result.valid);
+        });
+
+        document.getElementById('regPhone').addEventListener('blur', function() {
+            const result = validatePhone(this.value);
+            showError('regPhone', 'regPhoneError', result.message, result.valid);
+        });
+
+        // ====== ОБРАБОТКА РЕГИСТРАЦИИ ======
+        function handleRegister(event) {
+            event.preventDefault();
+
+            let hasError = false;
+
+            // Валидация имени
+            const name = document.getElementById('regName').value.trim();
+            if (name === '') {
+                showError('regName', 'regNameError', 'Имя не может быть пустым', false);
+                hasError = true;
+            } else {
+                showError('regName', 'regNameError', '', true);
+            }
+
+            // Валидация email
+            const emailResult = validateEmail(document.getElementById('regEmail').value);
+            showError('regEmail', 'regEmailError', emailResult.message, emailResult.valid);
+            if (!emailResult.valid) hasError = true;
+
+            // Валидация телефона
+            const phoneResult = validatePhone(document.getElementById('regPhone').value);
+            showError('regPhone', 'regPhoneError', phoneResult.message, phoneResult.valid);
+            if (!phoneResult.valid) hasError = true;
+
+            // Валидация пароля
+            const password = document.getElementById('regPassword').value;
+            if (password.trim() === '') {
+                showError('regPassword', 'regPasswordError', 'Пароль не может быть пустым', false);
+                hasError = true;
+            } else if (password.length < 6) {
+                showError('regPassword', 'regPasswordError', 'Пароль должен быть не менее 6 символов', false);
+                hasError = true;
+            } else {
+                showError('regPassword', 'regPasswordError', '', true);
+            }
+
+            if (!hasError) {
+                alert('✅ Регистрация успешна! Добро пожаловать!');
+                // Здесь можно добавить отправку формы
+                // window.location.href = 'index.html';
+            }
+
+            return false;
+        }
+
+        // ====== ОБРАБОТКА ВХОДА ======
+        function handleLogin(event) {
+            event.preventDefault();
+
+            let hasError = false;
+
+            const email = document.getElementById('loginEmail').value.trim();
+            if (email === '') {
+                showError('loginEmail', 'loginEmailError', 'Введите email', false);
+                hasError = true;
+            } else {
+                const emailResult = validateEmail(email);
+                if (!emailResult.valid) {
+                    showError('loginEmail', 'loginEmailError', emailResult.message, false);
+                    hasError = true;
+                } else {
+                    showError('loginEmail', 'loginEmailError', '', true);
+                }
+            }
+
+            const password = document.getElementById('loginPassword').value;
+            if (password === '') {
+                showError('loginPassword', 'loginPasswordError', 'Введите пароль', false);
+                hasError = true;
+            } else {
+                showError('loginPassword', 'loginPasswordError', '', true);
+            }
+
+            if (!hasError) {
+                alert('✅ Вход выполнен успешно!');
+                // window.location.href = 'index.html';
+            }
+
+            return false;
+        }
+
+        // Валидация email при входе в реальном времени
+        document.getElementById('loginEmail').addEventListener('blur', function() {
+            const val = this.value.trim();
+            if (val !== '') {
+                const result = validateEmail(val);
+                showError('loginEmail', 'loginEmailError', result.message, result.valid);
+            } else {
+                showError('loginEmail', 'loginEmailError', '', false);
+            }
+        });
+    </script>
+</body>
+</html>

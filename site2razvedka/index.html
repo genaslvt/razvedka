@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SneakerShop — Главная</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #ffffff;
+            color: #1f2937;
+            min-height: 100vh;
+        }
+        a { text-decoration: none; color: inherit; }
+        img { max-width: 100%; display: block; }
+
+        /* Шапка */
+        .header {
+            background: #fff;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            height: 64px;
+            gap: 20px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #7c3aed;
+            white-space: nowrap;
+        }
+        .search {
+            flex: 1;
+            max-width: 400px;
+            padding: 10px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 14px;
+            background: #f9fafb;
+            transition: 0.2s;
+        }
+        .search:focus {
+            outline: none;
+            border-color: #7c3aed;
+            background: #fff;
+        }
+        .header-icons {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+            margin-left: auto;
+            font-size: 20px;
+        }
+        .header-icons a {
+            position: relative;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .header-icons a:hover { opacity: 0.7; }
+        .badge {
+            position: absolute;
+            top: -6px;
+            right: -8px;
+            background: #ef4444;
+            color: #fff;
+            font-size: 10px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        /* Кнопка смены темы */
+        .theme-toggle {
+            background: #1f2937;
+            color: #fff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+        .theme-toggle:hover { background: #374151; }
+
+        /* Навигация */
+        .nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 0 20px;
+            position: sticky;
+            top: 64px;
+            z-index: 99;
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 28px;
+            overflow-x: auto;
+        }
+        .nav-inner a {
+            padding: 14px 0;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .nav-inner a:hover,
+        .nav-inner a.active {
+            color: #7c3aed;
+            border-bottom-color: #7c3aed;
+        }
+
+        /* Контент */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px 20px 40px;
+        }
+
+        /* Баннер */
+        .hero {
+            background: linear-gradient(135deg, #7c3aed, #6366f1);
+            color: #fff;
+            padding: 40px 36px;
+            border-radius: 16px;
+            margin-bottom: 28px;
+        }
+        .hero h1 { font-size: 34px; margin-bottom: 8px; }
+        .hero p { font-size: 17px; opacity: 0.9; margin-bottom: 18px; }
+
+        /* Кнопки */
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+        }
+        .btn-primary { background: #fff; color: #7c3aed; }
+        .btn-primary:hover { background: #f3f4f6; }
+        .btn-accent { background: #7c3aed; color: #fff; }
+        .btn-accent:hover { background: #6d28d9; }
+
+        /* Заголовки */
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        /* Сетка товаров */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 18px;
+        }
+        .product-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .product-card:hover {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            transform: translateY(-3px);
+        }
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #f3f4f6;
+        }
+        .product-info { padding: 14px; }
+        .product-info h3 { font-size: 15px; margin-bottom: 4px; }
+        .product-info .cat { font-size: 12px; color: #9ca3af; margin-bottom: 6px; }
+        .product-info .price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #7c3aed;
+        }
+        .colors { display: flex; gap: 6px; margin: 8px 0; }
+        .color-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid #e5e7eb;
+        }
+
+        /* Подвал */
+        .footer {
+            text-align: center;
+            padding: 24px;
+            color: #9ca3af;
+            border-top: 1px solid #e5e7eb;
+            font-size: 14px;
+            margin-top: auto;
+        }
+
+        /* Модальное окно авторизации */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-box {
+            background: #fff;
+            padding: 28px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 420px;
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: #6b7280;
+        }
+        .modal-close:hover { color: #1f2937; }
+        .modal-box h3 { margin-bottom: 16px; font-size: 20px; }
+        .modal-box input[type="text"],
+        .modal-box input[type="email"],
+        .modal-box input[type="password"],
+        .modal-box input[type="tel"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .modal-box input:focus {
+            outline: none;
+            border-color: #7c3aed;
+        }
+        .switch-text {
+            margin-top: 10px;
+            font-size: 13px;
+            text-align: center;
+            color: #6b7280;
+        }
+        .switch-text a {
+            color: #7c3aed;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .error-msg {
+            color: #ef4444;
+            font-size: 12px;
+            margin-bottom: 6px;
+            display: none;
+        }
+        .error-msg.show { display: block; }
+        input.error { border-color: #ef4444 !important; background: #fef2f2 !important; }
+        input.valid { border-color: #10b981 !important; background: #f0fdf4 !important; }
+
+        @media (max-width: 600px) {
+            .header-inner { flex-wrap: wrap; height: auto; padding: 10px 0; }
+            .search { order: 3; flex: 100%; max-width: 100%; }
+            .hero { padding: 24px 20px; }
+            .hero h1 { font-size: 26px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ====== ШАПКА ====== -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">SneakerShop</a>
+            <input class="search" type="text" placeholder="Поиск обуви...">
+            <div class="header-icons">
+                <a href="index.html" title="Главная">🏠</a>
+                <!-- Иконка пользователя → profile.html -->
+                <a href="profile.html" title="Личный кабинет">👤</a>
+                <a href="catalog.html" title="Корзина" style="position:relative;">
+                    🛒<span class="badge">2</span>
+                </a>
+                <!-- Кнопка смены темы -->
+                <a href="index2.html" class="theme-toggle" title="Тёмная тема">🌙</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ====== НАВИГАЦИЯ ====== -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="active">Главная</a>
+            <a href="catalog.html">Каталог</a>
+            <a href="contacts.html">Контакты</a>
+            <a href="about.html">О нас</a>
+            <!-- Ссылка «Личный кабинет» → profile.html -->
+            <a href="profile.html">Личный кабинет</a>
+        </div>
+    </nav>
+
+    <!-- ====== КОНТЕНТ ====== -->
+    <main class="main">
+        <!-- Баннер -->
+        <div class="hero">
+            <h1>Новая коллекция 2026</h1>
+            <p>Спортивная обувь со скидками до 40%</p>
+            <a href="catalog.html" class="btn btn-primary">Смотреть каталог</a>
+        </div>
+
+        <!-- Популярные товары -->
+        <h2 class="section-title">🔥 Популярное</h2>
+        <div class="product-grid" id="popularGrid"></div>
+    </main>
+
+    <!-- ====== ПОДВАЛ ====== -->
+    <footer class="footer">
+        <p>© 2026 SneakerShop. Все права защищены.</p>
+        <p style="margin-top:6px;">
+            <a href="index2.html" style="color:#7c3aed; text-decoration:underline;">🌙 Переключить на тёмную тему</a>
+        </p>
+    </footer>
+
+    <!-- ====== МОДАЛЬНОЕ ОКНО: АВТОРИЗАЦИЯ ====== -->
+    <div id="authModal" class="modal-overlay">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal('authModal')">✕</button>
+
+            <!-- Форма входа -->
+            <div id="loginForm">
+                <h3>🔐 Вход</h3>
+                <input type="email" id="loginEmail" placeholder="Email">
+                <span class="error-msg" id="loginEmailError"></span>
+                <input type="password" id="loginPassword" placeholder="Пароль">
+                <span class="error-msg" id="loginPasswordError"></span>
+                <button class="btn btn-accent" style="width:100%;" onclick="handleLogin()">Войти</button>
+                <p class="switch-text">Нет аккаунта? <a onclick="toggleAuth()">Зарегистрироваться</a></p>
+            </div>
+
+            <!-- Форма регистрации -->
+            <div id="registerForm" style="display:none;">
+                <h3>📝 Регистрация</h3>
+                <input type="text" id="regName" placeholder="Имя">
+                <span class="error-msg" id="regNameError"></span>
+                <input type="email" id="regEmail" placeholder="Email">
+                <span class="error-msg" id="regEmailError"></span>
+                <input type="tel" id="regPhone" placeholder="Телефон">
+                <span class="error-msg" id="regPhoneError"></span>
+                <input type="password" id="regPassword" placeholder="Пароль">
+                <span class="error-msg" id="regPasswordError"></span>
+                <button class="btn btn-accent" style="width:100%;" onclick="handleRegister()">Создать аккаунт</button>
+                <p class="switch-text">Уже есть аккаунт? <a onclick="toggleAuth()">Войти</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Товары
+        const products = [
+            { id: 1, name: "Nike Air Max", price: 13990, img: "https://placehold.co/400x300/7c3aed/white?text=Nike", colors: ["#000","#fff"] },
+            { id: 2, name: "Adidas Ultraboost", price: 15990, img: "https://placehold.co/400x300/1f2937/white?text=Adidas", colors: ["#1f2937","#fff"] },
+            { id: 3, name: "Puma Velocity", price: 10990, img: "https://placehold.co/400x300/10b981/white?text=Puma", colors: ["#10b981","#000"] },
+            { id: 4, name: "Reebok Nano X4", price: 12490, img: "https://placehold.co/400x300/6366f1/white?text=Reebok", colors: ["#6366f1","#fff"] },
+        ];
+
+        document.getElementById('popularGrid').innerHTML = products.map(p => `
+            <div class="product-card" onclick="location.href='product.html?id=${p.id}'">
+                <img src="${p.img}" alt="${p.name}">
+                <div class="product-info">
+                    <p class="cat">Кроссовки</p>
+                    <h3>${p.name}</h3>
+                    <div class="colors">${p.colors.map(c => `<div class="color-dot" style="background:${c};"></div>`).join('')}</div>
+                    <p class="price">${p.price.toLocaleString()} ₽</p>
+                </div>
+            </div>
+        `).join('');
+
+        // Модальное окно авторизации
+        function openModal(id) { document.getElementById(id).classList.add('open'); }
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('open');
+            clearErrors();
+        }
+        window.onclick = function(e) {
+            if (e.target.classList.contains('modal-overlay')) {
+                e.target.classList.remove('open');
+                clearErrors();
+            }
+        };
+        function toggleAuth() {
+            document.getElementById('loginForm').style.display =
+                document.getElementById('loginForm').style.display === 'none' ? 'block' : 'none';
+            document.getElementById('registerForm').style.display =
+                document.getElementById('registerForm').style.display === 'none' ? 'block' : 'none';
+            clearErrors();
+        }
+        function clearErrors() {
+            document.querySelectorAll('.error-msg').forEach(el => el.classList.remove('show'));
+            document.querySelectorAll('input.error, input.valid').forEach(el => el.classList.remove('error', 'valid'));
+        }
+
+        // Валидация
+        function validateEmail(email) {
+            const t = email.trim();
+            if (!t) return { valid: false, message: 'Email не может быть пустым' };
+            if (/[а-яё]/i.test(t)) return { valid: false, message: 'Email не должен содержать русские буквы' };
+            if (!t.includes('@')) return { valid: false, message: 'Email должен содержать @' };
+            if (!t.includes('.')) return { valid: false, message: 'Email должен содержать точку' };
+            return { valid: true, message: '' };
+        }
+        function validatePhone(phone) {
+            const t = phone.trim();
+            if (!t) return { valid: false, message: 'Телефон не может быть пустым' };
+            if (/[а-яёa-z]/i.test(t)) return { valid: false, message: 'Телефон не должен содержать буквы' };
+            return { valid: true, message: '' };
+        }
+        function showFieldError(inpId, errId, res) {
+            const inp = document.getElementById(inpId);
+            const err = document.getElementById(errId);
+            inp.classList.remove('error', 'valid');
+            if (!res.valid) {
+                inp.classList.add('error');
+                err.textContent = res.message;
+                err.classList.add('show');
+            } else if (inp.value.trim()) {
+                inp.classList.add('valid');
+                err.classList.remove('show');
+            } else {
+                err.classList.remove('show');
+            }
+        }
+
+        function handleLogin() {
+            clearErrors();
+            let err = false;
+            const e = validateEmail(document.getElementById('loginEmail').value);
+            showFieldError('loginEmail', 'loginEmailError', e);
+            if (!e.valid) err = true;
+            if (!document.getElementById('loginPassword').value.trim()) {
+                showFieldError('loginPassword', 'loginPasswordError', { valid: false, message: 'Введите пароль' });
+                err = true;
+            }
+            if (!err) { alert('✅ Вход выполнен!'); closeModal('authModal'); }
+        }
+
+        function handleRegister() {
+            clearErrors();
+            let err = false;
+            if (!document.getElementById('regName').value.trim()) {
+                showFieldError('regName', 'regNameError', { valid: false, message: 'Введите имя' });
+                err = true;
+            }
+            const e = validateEmail(document.getElementById('regEmail').value);
+            showFieldError('regEmail', 'regEmailError', e);
+            if (!e.valid) err = true;
+            const p = validatePhone(document.getElementById('regPhone').value);
+            showFieldError('regPhone', 'regPhoneError', p);
+            if (!p.valid) err = true;
+            if (!document.getElementById('regPassword').value.trim()) {
+                showFieldError('regPassword', 'regPasswordError', { valid: false, message: 'Введите пароль' });
+                err = true;
+            }
+            if (!err) { alert('✅ Регистрация успешна!'); closeModal('authModal'); }
+        }
+    </script>
+</body>
+</html>

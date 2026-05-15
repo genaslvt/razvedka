@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SneakerShop — Вход / Регистрация</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f9fafb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .auth-box {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 32px;
+            width: 90%;
+            max-width: 400px;
+        }
+        .auth-box h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #7c3aed;
+        }
+        .auth-box input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #7c3aed;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 6px;
+        }
+        .btn:hover { background: #6d28d9; }
+        .switch {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+        .switch a { color: #7c3aed; cursor: pointer; }
+        .hidden { display: none; }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+        .back-link a { color: #7c3aed; }
+    </style>
+</head>
+<body>
+
+    <div class="auth-box">
+        <h2>🔐 Вход</h2>
+
+        <!-- Форма входа -->
+        <div id="loginForm">
+            <input type="email" placeholder="Email">
+            <input type="password" placeholder="Пароль">
+            <button class="btn">Войти</button>
+            <p class="switch">Нет аккаунта? <a onclick="toggleForm()">Зарегистрироваться</a></p>
+        </div>
+
+        <!-- Форма регистрации -->
+        <div id="registerForm" class="hidden">
+            <input type="text" placeholder="Имя">
+            <input type="email" placeholder="Email">
+            <input type="password" placeholder="Пароль">
+            <button class="btn">Создать аккаунт</button>
+            <p class="switch">Уже есть аккаунт? <a onclick="toggleForm()">Войти</a></p>
+        </div>
+
+        <div class="back-link"><a href="index.html">← На главную</a></div>
+    </div>
+
+    <script>
+        function toggleForm() {
+            document.getElementById('loginForm').classList.toggle('hidden');
+            document.getElementById('registerForm').classList.toggle('hidden');
+            const h2 = document.querySelector('h2');
+            h2.textContent = h2.textContent === '🔐 Вход' ? '📝 Регистрация' : '🔐 Вход';
+        }
+    </script>
+</body>
+</html>

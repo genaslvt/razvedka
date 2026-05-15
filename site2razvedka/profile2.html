@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SneakerShop — Личный кабинет</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        a { text-decoration: none; color: inherit; }
+        .header {
+            background: #1e293b;
+            border-bottom: 1px solid #334155;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            height: 64px;
+            gap: 20px;
+        }
+        .logo { font-size: 24px; font-weight: 800; color: #a78bfa; }
+        .header-icons {
+            display: flex;
+            gap: 14px;
+            font-size: 20px;
+            margin-left: auto;
+        }
+        .theme-toggle {
+            background: #f1f5f9;
+            color: #1e293b;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .nav {
+            background: #1e293b;
+            border-bottom: 1px solid #334155;
+            padding: 0 20px;
+            position: sticky;
+            top: 64px;
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 28px;
+        }
+        .nav-inner a {
+            padding: 14px 0;
+            font-size: 14px;
+            font-weight: 500;
+            color: #94a3b8;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-inner a:hover,
+        .nav-inner a.active { color: #a78bfa; border-bottom-color: #a78bfa; }
+        .main { max-width: 1200px; margin: 0 auto; padding: 24px 20px 40px; }
+        .section-title { font-size: 22px; font-weight: 700; margin-bottom: 18px; }
+        .profile-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 14px;
+            padding: 28px;
+            max-width: 500px;
+        }
+        .avatar-row { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+        .avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: #334155;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            overflow: hidden;
+        }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-card label { font-size: 13px; color: #94a3b8; display: block; margin-bottom: 4px; }
+        .profile-card input[type="text"],
+        .profile-card input[type="email"],
+        .profile-card input[type="tel"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        .checkbox-row { font-size: 13px; margin-bottom: 8px; display: flex; align-items: flex-start; gap: 6px; }
+        .checkbox-row input { margin-top: 2px; }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #7c3aed;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn:hover { background: #6d28d9; }
+        .footer {
+            text-align: center;
+            padding: 24px;
+            color: #64748b;
+            border-top: 1px solid #334155;
+        }
+        .footer a { color: #a78bfa; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <a href="index2.html" class="logo">SneakerShop</a>
+            <div class="header-icons">
+                <a href="index2.html">🏠</a>
+                <a href="catalog2.html">🛒</a>
+                <a href="profile.html" class="theme-toggle">☀️</a>
+            </div>
+        </div>
+    </header>
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index2.html">Главная</a>
+            <a href="catalog2.html">Каталог</a>
+            <a href="contacts2.html">Контакты</a>
+            <a href="about2.html">О нас</a>
+            <a href="profile2.html" class="active">Личный кабинет</a>
+        </div>
+    </nav>
+    <main class="main">
+        <h2 class="section-title">Личный кабинет</h2>
+        <div class="profile-card">
+            <div class="avatar-row">
+                <div class="avatar" id="avatarPreview">👤</div>
+                <input type="file" accept="image/*" onchange="previewAvatar(event)" style="font-size:13px;">
+            </div>
+            <label>Имя</label>
+            <input type="text" value="Алексей">
+            <label>Email</label>
+            <input type="email" value="alex@mail.ru">
+            <label>Телефон</label>
+            <input type="tel" value="+7 (999) 123-45-67">
+            <hr style="margin:16px 0; border-color:#334155;">
+            <div class="checkbox-row">
+                <input type="checkbox" checked>
+                <label>Согласие на обработку данных</label>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox">
+                <label>Принимаю <a href="#" style="color:#a78bfa;">пользовательское соглашение</a></label>
+            </div>
+            <button class="btn">Сохранить</button>
+        </div>
+    </main>
+    <footer class="footer">
+        <p>© 2026 SneakerShop | <a href="profile.html">☀️ Светлая тема</a></p>
+    </footer>
+    <script>
+        function previewAvatar(e) {
+            const f = e.target.files[0];
+            if (f) {
+                const r = new FileReader();
+                r.onload = ev => {
+                    document.getElementById('avatarPreview').innerHTML = `<img src="${ev.target.result}">`;
+                };
+                r.readAsDataURL(f);
+            }
+        }
+    </script>
+</body>
+</html>

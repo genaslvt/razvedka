@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SneakerShop — Каталог</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        a { text-decoration: none; color: inherit; }
+        .header {
+            background: #1e293b;
+            border-bottom: 1px solid #334155;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            height: 64px;
+            gap: 20px;
+        }
+        .logo { font-size: 24px; font-weight: 800; color: #a78bfa; }
+        .search {
+            flex: 1;
+            max-width: 400px;
+            padding: 10px 16px;
+            border: 2px solid #334155;
+            border-radius: 10px;
+            background: #0f172a;
+            color: #e2e8f0;
+            font-size: 14px;
+        }
+        .search:focus { outline: none; border-color: #a78bfa; }
+        .search::placeholder { color: #64748b; }
+        .header-icons {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+            margin-left: auto;
+            font-size: 20px;
+        }
+        .header-icons a { position: relative; transition: 0.2s; }
+        .header-icons a:hover { opacity: 0.7; }
+        .badge {
+            position: absolute;
+            top: -6px;
+            right: -8px;
+            background: #ef4444;
+            color: #fff;
+            font-size: 10px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        .theme-toggle {
+            background: #f1f5f9;
+            color: #1e293b;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .theme-toggle:hover { background: #e2e8f0; }
+        .nav {
+            background: #1e293b;
+            border-bottom: 1px solid #334155;
+            padding: 0 20px;
+            position: sticky;
+            top: 64px;
+            z-index: 99;
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 28px;
+            overflow-x: auto;
+        }
+        .nav-inner a {
+            padding: 14px 0;
+            font-size: 14px;
+            font-weight: 500;
+            color: #94a3b8;
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+        }
+        .nav-inner a:hover,
+        .nav-inner a.active { color: #a78bfa; border-bottom-color: #a78bfa; }
+        .main { max-width: 1200px; margin: 0 auto; padding: 24px 20px 40px; }
+        .section-title { font-size: 22px; font-weight: 700; margin-bottom: 16px; }
+        .filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .filters select,
+        .filters input {
+            padding: 10px 14px;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            font-size: 13px;
+            background: #1e293b;
+            color: #e2e8f0;
+        }
+        .filters select:focus,
+        .filters input:focus { outline: none; border-color: #a78bfa; }
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+        }
+        .btn-accent { background: #7c3aed; color: #fff; }
+        .btn-accent:hover { background: #6d28d9; }
+        .btn-outline {
+            background: transparent;
+            color: #a78bfa;
+            border: 2px solid #a78bfa;
+        }
+        .btn-outline:hover { background: #1e1b4b; }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 18px;
+        }
+        .product-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 14px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .product-card:hover {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            transform: translateY(-3px);
+            border-color: #a78bfa;
+        }
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #334155;
+        }
+        .product-info { padding: 14px; }
+        .product-info h3 { font-size: 15px; margin-bottom: 4px; }
+        .product-info .cat { font-size: 12px; color: #64748b; margin-bottom: 6px; }
+        .price { font-size: 18px; font-weight: 700; color: #a78bfa; }
+        .colors { display: flex; gap: 6px; margin: 8px 0; }
+        .color-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid #475569;
+        }
+        .footer {
+            text-align: center;
+            padding: 24px;
+            color: #64748b;
+            border-top: 1px solid #334155;
+            font-size: 14px;
+            margin-top: auto;
+        }
+        .footer a { color: #a78bfa; text-decoration: underline; }
+        @media (max-width: 600px) {
+            .header-inner { flex-wrap: wrap; height: auto; padding: 10px 0; }
+            .search { order: 3; flex: 100%; max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-inner">
+            <a href="index2.html" class="logo">SneakerShop</a>
+            <input class="search" type="text" placeholder="Поиск обуви...">
+            <div class="header-icons">
+                <a href="index2.html">🏠</a>
+                <a href="profile2.html">👤</a>
+                <a href="catalog2.html" style="position:relative;">
+                    🛒<span class="badge">2</span>
+                </a>
+                <a href="catalog.html" class="theme-toggle">☀️</a>
+            </div>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index2.html">Главная</a>
+            <a href="catalog2.html" class="active">Каталог</a>
+            <a href="contacts2.html">Контакты</a>
+            <a href="about2.html">О нас</a>
+            <a href="profile2.html">Личный кабинет</a>
+        </div>
+    </nav>
+
+    <main class="main">
+        <h2 class="section-title">Каталог обуви</h2>
+        <div class="filters">
+            <select><option>Все бренды</option><option>Nike</option><option>Adidas</option><option>Puma</option></select>
+            <select><option>Все размеры</option><option>39</option><option>40</option><option>41</option><option>42</option></select>
+            <input type="number" placeholder="Цена до" style="width:110px;">
+            <button class="btn btn-accent">Применить</button>
+            <button class="btn btn-outline">Сбросить</button>
+        </div>
+        <div class="product-grid" id="catalogGrid"></div>
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 SneakerShop</p>
+        <p style="margin-top:6px;"><a href="catalog.html">☀️ Светлая тема</a></p>
+    </footer>
+
+    <script>
+        const products = [
+            { id: 1, name: "Nike Air Max", price: 13990, img: "https://placehold.co/400x300/7c3aed/white?text=Nike", colors: ["#000","#fff"] },
+            { id: 2, name: "Adidas Ultraboost", price: 15990, img: "https://placehold.co/400x300/1f2937/white?text=Adidas", colors: ["#1f2937","#fff"] },
+            { id: 3, name: "Puma Velocity", price: 10990, img: "https://placehold.co/400x300/10b981/white?text=Puma", colors: ["#10b981","#000"] },
+            { id: 4, name: "Reebok Nano X4", price: 12490, img: "https://placehold.co/400x300/6366f1/white?text=Reebok", colors: ["#6366f1","#fff"] },
+            { id: 5, name: "Asics Gel Kayano", price: 14990, img: "https://placehold.co/400x300/ef4444/white?text=Asics", colors: ["#ef4444","#000"] },
+            { id: 6, name: "New Balance 574", price: 11990, img: "https://placehold.co/400x300/8b5cf6/white?text=NB", colors: ["#8b5cf6","#fff"] },
+        ];
+        document.getElementById('catalogGrid').innerHTML = products.map(p => `
+            <div class="product-card" onclick="location.href='product2.html?id=${p.id}'">
+                <img src="${p.img}" alt="${p.name}">
+                <div class="product-info">
+                    <p class="cat">Кроссовки</p>
+                    <h3>${p.name}</h3>
+                    <div class="colors">${p.colors.map(c => `<div class="color-dot" style="background:${c};"></div>`).join('')}</div>
+                    <p class="price">${p.price.toLocaleString()} ₽</p>
+                </div>
+            </div>
+        `).join('');
+    </script>
+</body>
+</html>

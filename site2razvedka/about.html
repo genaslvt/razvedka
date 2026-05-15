@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SneakerShop — О нас</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #fff;
+            color: #1f2937;
+            min-height: 100vh;
+        }
+        a { text-decoration: none; color: inherit; }
+
+        .header {
+            background: #fff;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            height: 64px;
+            gap: 20px;
+        }
+        .logo { font-size: 24px; font-weight: 800; color: #7c3aed; }
+        .search {
+            flex: 1;
+            max-width: 400px;
+            padding: 10px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            background: #f9fafb;
+        }
+        .header-icons { display: flex; gap: 18px; font-size: 20px; margin-left: auto; }
+        .badge {
+            position: absolute;
+            top: -6px;
+            right: -8px;
+            background: #ef4444;
+            color: #fff;
+            font-size: 10px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .nav {
+            background: #fff;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 0 20px;
+            position: sticky;
+            top: 64px;
+            z-index: 99;
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 28px;
+        }
+        .nav-inner a {
+            padding: 14px 0;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-inner a:hover,
+        .nav-inner a.active {
+            color: #7c3aed;
+            border-bottom-color: #7c3aed;
+        }
+
+        .main { max-width: 1200px; margin: 0 auto; padding: 24px 20px 40px; }
+        .section-title { font-size: 22px; font-weight: 700; margin-bottom: 16px; }
+
+        .about-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 28px;
+            max-width: 700px;
+            line-height: 1.7;
+        }
+        .footer {
+            text-align: center;
+            padding: 24px;
+            color: #9ca3af;
+            border-top: 1px solid #e5e7eb;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">SneakerShop</a>
+            <input class="search" type="text" placeholder="Поиск...">
+            <div class="header-icons">
+                <a href="index.html">🏠</a>
+                <a href="#">👤</a>
+                <a href="catalog.html" style="position:relative;">🛒<span class="badge">2</span></a>
+            </div>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index.html">Главная</a>
+            <a href="catalog.html">Каталог</a>
+            <a href="contacts.html">Контакты</a>
+            <a href="about.html" class="active">О нас</a>
+            <a href="#">Личный кабинет</a>
+        </div>
+    </nav>
+
+    <main class="main">
+        <h2 class="section-title">О нас</h2>
+        <div class="about-card">
+            <p><strong>SneakerShop</strong> — интернет-магазин спортивной обуви с 2020 года.</p>
+            <p>Мы продаём только оригинальные кроссовки от ведущих мировых брендов: Nike, Adidas, Puma, Reebok, Asics и New Balance.</p>
+            <p>Наша цель — сделать качественную спортивную обувь доступной каждому. Быстрая доставка, удобный возврат и постоянные скидки.</p>
+        </div>
+    </main>
+
+    <footer class="footer">© 2026 SneakerShop</footer>
+</body>
+</html>

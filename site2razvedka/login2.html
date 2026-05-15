@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SneakerShop — Вход</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #0f172a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .auth-box {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 32px;
+            width: 90%;
+            max-width: 400px;
+        }
+        .auth-box h2 { margin-bottom: 20px; text-align: center; color: #a78bfa; }
+        .auth-box input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            font-size: 14px;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        .auth-box input:focus { outline: none; border-color: #a78bfa; }
+        .auth-box input.error { border-color: #ef4444; background: #1c1917; }
+        .auth-box input.valid { border-color: #10b981; background: #022c22; }
+        .error-msg { color: #ef4444; font-size: 12px; margin-bottom: 8px; display: none; }
+        .error-msg.show { display: block; }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #7c3aed;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 6px;
+        }
+        .btn:hover { background: #6d28d9; }
+        .switch { text-align: center; margin-top: 14px; font-size: 13px; color: #94a3b8; }
+        .switch a { color: #a78bfa; cursor: pointer; text-decoration: underline; }
+        .hidden { display: none; }
+        .back-link { text-align: center; margin-top: 16px; font-size: 13px; }
+        .back-link a { color: #a78bfa; }
+        .theme-link { text-align: center; margin-top: 10px; }
+        .theme-link a { color: #64748b; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="auth-box">
+        <h2>🔐 Вход</h2>
+        <div id="loginForm">
+            <input type="email" id="loginEmail" placeholder="Email">
+            <span class="error-msg" id="loginEmailError"></span>
+            <input type="password" id="loginPassword" placeholder="Пароль">
+            <span class="error-msg" id="loginPasswordError"></span>
+            <button class="btn" onclick="handleLogin()">Войти</button>
+            <p class="switch">Нет аккаунта? <a onclick="toggleForm()">Регистрация</a></p>
+        </div>
+        <div id="registerForm" class="hidden">
+            <input type="text" id="regName" placeholder="Имя">
+            <span class="error-msg" id="regNameError"></span>
+            <input type="email" id="regEmail" placeholder="Email">
+            <span class="error-msg" id="regEmailError"></span>
+            <input type="tel" id="regPhone" placeholder="Телефон">
+            <span class="error-msg" id="regPhoneError"></span>
+            <input type="password" id="regPassword" placeholder="Пароль">
+            <span class="error-msg" id="regPasswordError"></span>
+            <button class="btn" onclick="handleRegister()">Создать аккаунт</button>
+            <p class="switch">Есть аккаунт? <a onclick="toggleForm()">Войти</a></p>
+        </div>
+        <div class="back-link"><a href="index2.html">← На главную</a></div>
+        <div class="theme-link"><a href="login.html">☀️ Светлая тема</a></div>
+    </div>
+
+    <script>
+        function toggleForm() {
+            document.getElementById('loginForm').classList.toggle('hidden');
+            document.getElementById('registerForm').classList.toggle('hidden');
+            document.querySelector('h2').textContent =
+                document.getElementById('registerForm').classList.contains('hidden') ? '🔐 Вход' : '📝 Регистрация';
+            clearErrors();
+        }
+        function clearErrors() {
+            document.querySelectorAll('.error-msg').forEach(e => e.classList.remove('show'));
+            document.querySelectorAll('input').forEach(i => i.classList.remove('error','valid'));
+        }
+        function validateEmail(e) {
+            const t = e.trim();
+            if (!t) return { valid: false, message: 'Email не может быть пустым' };
+            if (/[а-яё]/i.test(t)) return { valid: false, message: 'Нельзя русские буквы' };
+            if (!t.includes('@')) return { valid: false, message: 'Нужна @' };
+            if (!t.includes('.')) return { valid: false, message: 'Нужна точка' };
+            return { valid: true, message: '' };
+        }
+        function validatePhone(p) {
+            const t = p.trim();
+            if (!t) return { valid: false, message: 'Телефон не может быть пустым' };
+            if (/[а-яёa-z]/i.test(t)) return { valid: false, message: 'Нельзя буквы' };
+            return { valid: true, message: '' };
+        }
+        function showError(inpId, errId, res) {
+            const inp = document.getElementById(inpId), err = document.getElementById(errId);
+            inp.classList.remove('error','valid');
+            if (!res.valid) { inp.classList.add('error'); err.textContent = res.message; err.classList.add('show'); }
+            else if (inp.value.trim()) { inp.classList.add('valid'); err.classList.remove('show'); }
+            else err.classList.remove('show');
+        }
+        function handleLogin() {
+            clearErrors(); let err = false;
+            const e = validateEmail(document.getElementById('loginEmail').value);
+            showError('loginEmail','loginEmailError',e); if (!e.valid) err = true;
+            if (!document.getElementById('loginPassword').value.trim()) {
+                showError('loginPassword','loginPasswordError',{valid:false,message:'Введите пароль'}); err = true;
+            }
+            if (!err) alert('✅ Вход выполнен!');
+        }
+        function handleRegister() {
+            clearErrors(); let err = false;
+            if (!document.getElementById('regName').value.trim()) {
+                showError('regName','regNameError',{valid:false,message:'Введите имя'}); err = true;
+            }
+            const e = validateEmail(document.getElementById('regEmail').value);
+            showError('regEmail','regEmailError',e); if (!e.valid) err = true;
+            const p = validatePhone(document.getElementById('regPhone').value);
+            showError('regPhone','regPhoneError',p); if (!p.valid) err = true;
+            if (!document.getElementById('regPassword').value.trim()) {
+                showError('regPassword','regPasswordError',{valid:false,message:'Введите пароль'}); err = true;
+            }
+            if (!err) alert('✅ Регистрация успешна!');
+        }
+    </script>
+</body>
+</html>
