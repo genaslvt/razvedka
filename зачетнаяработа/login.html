@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корочки.есть — Авторизация</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .card {
+            background: #fff;
+            padding: 32px 28px;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 380px;
+            position: relative;
+        }
+        .theme-toggle {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: #e5e7eb;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .theme-toggle:hover { transform: scale(1.1); }
+        .card h2 {
+            text-align: center;
+            color: #4f46e5;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        .logo { text-align: center; margin-bottom: 20px; }
+        .global-error {
+            background: #fef2f2;
+            border: 1px solid #ef4444;
+            color: #991b1b;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 14px;
+            font-size: 13px;
+            display: none;
+        }
+        .global-error.show { display: block; }
+        .field { margin-bottom: 14px; }
+        .field label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .field input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .field input:focus { outline: none; border-color: #4f46e5; }
+        .field input.error { border-color: #ef4444; background: #fef2f2; }
+        .error-text { color: #ef4444; font-size: 11px; margin-top: 3px; display: none; }
+        .error-text.show { display: block; }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #4f46e5;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn:hover { background: #4338ca; }
+        .link {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 13px;
+        }
+        .link a { color: #4f46e5; text-decoration: none; font-weight: 500; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <button class="theme-toggle" onclick="window.location.href='login2.html'">🌙</button>
+        <div class="logo">
+            <h2>🎓 Корочки.есть</h2>
+        </div>
+        <div class="global-error" id="globalError">❌ Неверный логин или пароль</div>
+        <form onsubmit="return handleLogin(event)">
+            <div class="field">
+                <label>👤 Логин</label>
+                <input type="text" id="login" autocomplete="off" placeholder="Введите логин">
+                <span class="error-text" id="loginError"></span>
+            </div>
+            <div class="field">
+                <label>🔒 Пароль</label>
+                <input type="password" id="password" placeholder="Введите пароль">
+                <span class="error-text" id="passwordError"></span>
+            </div>
+            <button type="submit" class="btn">Войти</button>
+        </form>
+        <p class="link">Еще не зарегистрированы? <a href="register.html">Регистрация</a></p>
+        <p class="link"><a href="login2.html">🌙 Тёмная версия</a></p>
+    </div>
+
+    <script>
+        function handleLogin(e) {
+            e.preventDefault();
+            const login = document.getElementById('login').value.trim();
+            const password = document.getElementById('password').value;
+            let hasError = false;
+
+            if (!login) {
+                document.getElementById('loginError').textContent = 'Введите логин';
+                document.getElementById('loginError').classList.add('show');
+                document.getElementById('login').classList.add('error');
+                hasError = true;
+            } else {
+                document.getElementById('loginError').classList.remove('show');
+                document.getElementById('login').classList.remove('error');
+            }
+
+            if (!password) {
+                document.getElementById('passwordError').textContent = 'Введите пароль';
+                document.getElementById('passwordError').classList.add('show');
+                document.getElementById('password').classList.add('error');
+                hasError = true;
+            } else {
+                document.getElementById('passwordError').classList.remove('show');
+                document.getElementById('password').classList.remove('error');
+            }
+
+            if (hasError) return false;
+
+            if (login === 'Admin' && password === '12345678') {
+                localStorage.setItem('korochki_current_user', JSON.stringify({
+                    login: 'Admin',
+                    role: 'admin',
+                    fullName: 'Администратор'
+                }));
+                window.location.href = 'admin.html';
+                return false;
+            }
+
+            const users = JSON.parse(localStorage.getItem('korochki_users') || '[]');
+            const user = users.find(u => u.login === login && u.password === password);
+
+            if (user) {
+                localStorage.setItem('korochki_current_user', JSON.stringify({
+                    login: user.login,
+                    role: 'user',
+                    fullName: user.fullName
+                }));
+                window.location.href = 'applications.html';
+            } else {
+                document.getElementById('globalError').classList.add('show');
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>
